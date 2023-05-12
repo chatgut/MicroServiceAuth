@@ -1,7 +1,7 @@
 version: '3.1'
 services:
   API:
-    image: micro:latest
+    image: authservice:latest
     ports:
       - "8081:8081"
     depends_on:
