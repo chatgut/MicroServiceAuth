@@ -8,7 +8,7 @@ spec:
   gatewayClassName: istio
   listeners:
     - name: http
-      port: 80
+      port: 97
       protocol: HTTP
       allowedRoutes:
         namespaces:
@@ -32,7 +32,7 @@ spec:
     - matches:
         - path:
             type: PathPrefix
-            value: /api/demoController/hej
+            value: /api/auth/register
       backendRefs:
         - name: auth
           port: 8081
