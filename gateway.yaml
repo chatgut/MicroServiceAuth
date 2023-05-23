@@ -14,25 +14,32 @@ spec:
         namespaces:
           from: Same
 ---
-apiVersion: gateway.networking.k8s.io/v1beta1
-kind: HTTPRoute
+apiVersion: networking.k8s.io/v1
+kind: Ingress
 metadata:
   name: auth-gateway
 spec:
-  parentRefs:
-    - name: jwt-gateway
   rules:
-    - matches:
-        - path:
-            type: Exact
-            value: /
-      backendRefs:
-        - name: spring
-          port: 8081
-    - matches:
-        - path:
-            type: PathPrefix
-            value: /api/auth/register
-      backendRefs:
-        - name: auth
-          port: 8081
+    - http:
+        paths:
+          - path: /api/auth
+            pathType: Prefix
+            backend:
+              service:
+                name: auth-service
+                port:
+                  number: 8081
+          - path: /register
+            pathType: Prefix
+            backend:
+              service:
+                name: auth-service
+                port:
+                  number: 8081
+          - path: /authenticate
+            pathType: Prefix
+            backend:
+              service:
+                name: auth-service
+                port:
+                  number: 8081
