@@ -8,7 +8,7 @@ spec:
   gatewayClassName: istio
   listeners:
     - name: http
-      port: 8081
+      port: 97
       protocol: HTTP
       allowedRoutes:
         namespaces:
