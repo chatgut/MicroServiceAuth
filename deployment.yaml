@@ -27,6 +27,7 @@ spec:
             - name: SPRING_JPA_HIBERNATE_DDL_AUTO
               value: create-drop
 
+
 ---
 apiVersion: v1
 kind: Service
@@ -76,7 +77,13 @@ spec:
                 - "postgres"
             initialDelaySeconds: 10
             periodSeconds: 10
-
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgredb
+      volumes:
+        - name: postgredb
+          persistentVolumeClaim:
+            claimName: postgres-pv-claim
 ---
 apiVersion: v1
 kind: Service

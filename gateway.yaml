@@ -8,38 +8,8 @@ spec:
   gatewayClassName: istio
   listeners:
     - name: http
-      port: 97
+      port: 8081
       protocol: HTTP
       allowedRoutes:
         namespaces:
           from: Same
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: auth-gateway
-spec:
-  rules:
-    - http:
-        paths:
-          - path: /api/auth
-            pathType: Prefix
-            backend:
-              service:
-                name: auth-service
-                port:
-                  number: 8081
-          - path: /register
-            pathType: Prefix
-            backend:
-              service:
-                name: auth-service
-                port:
-                  number: 8081
-          - path: /authenticate
-            pathType: Prefix
-            backend:
-              service:
-                name: auth-service
-                port:
-                  number: 8081
