@@ -25,24 +25,23 @@ spec:
   gateways:
     - auth-gateway
   http:
-    - name: auth
-      match:
+      - match:
         - uri:
             prefix: /authservice/
-      rewrite:
-        uri: /
-      route:
+        rewrite:
+         uri: /
+        route:
         - destination:
             host: auth-service.default.svc.cluster.local
             port:
               number: 8081
-
-#---
-#apiVersion: "security.istio.io/v1beta1"
-#kind: "PeerAuthentication"
-#metadata:
-#  name: "mypeerauthentication"
-#  namespace: "default"
-#spec:
-#  mtls:
-#    mode: DISABLE
+      - match:
+        - uri:
+            prefix: /postservice/
+        rewrite:
+          uri: /
+        route:
+          - destination:
+              host: postservice.default.svc.cluster.local
+              port:
+                number: 8000
