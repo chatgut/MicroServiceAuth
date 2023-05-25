@@ -1,15 +1,48 @@
-apiVersion: gateway.networking.k8s.io/v1beta1
+apiVersion: networking.istio.io/v1beta1
 kind: Gateway
 metadata:
   name: auth-gateway
-  labels:
-    app: gateway
+  namespace: default
 spec:
-  gatewayClassName: istio
-  listeners:
-    - name: http
-      port: 97
-      protocol: HTTP
-      allowedRoutes:
-        namespaces:
-          from: Same
+  selector:
+    istio: ingressgateway
+  servers:
+    - port:
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts:
+        - "*"
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: virtualservice
+  namespace: default
+spec:
+  hosts:
+    - "*"
+  gateways:
+    - auth-gateway
+  http:
+    - name: auth
+      match:
+        - uri:
+            prefix: /authservice/
+      rewrite:
+        uri: /
+      route:
+        - destination:
+            host: auth-service.default.svc.cluster.local
+            port:
+              number: 8081
+
+#---
+#apiVersion: "security.istio.io/v1beta1"
+#kind: "PeerAuthentication"
+#metadata:
+#  name: "mypeerauthentication"
+#  namespace: "default"
+#spec:
+#  mtls:
+#    mode: DISABLE
